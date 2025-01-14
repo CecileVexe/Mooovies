@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getPopularMoovies } from "../services/moovies.service";
 import { Movies } from "../types/moovies.type";
+import { Link } from "react-router";
 
 const MoviesList = () => {
   const [popularMovies, setPopularMovies] = useState<Array<Movies>>([]);
@@ -43,7 +44,7 @@ const MoviesList = () => {
               height="450"
             />
             <p>{movie.overview}</p>
-            <button>En savoir plus</button>
+            <Link to={`/movie:${movie.id}`}>En savoir plus</Link>
           </div>
         ))}
       </div>
