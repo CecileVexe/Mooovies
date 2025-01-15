@@ -8,13 +8,13 @@ import {
 import { Movies } from "../types/moovies.type";
 import { Link } from "react-router";
 import styles from "./../style/MovieList.module.css"; // Import du fichier CSS Module
+import { searchMovie } from "../services/movie.service";
 
 const MoviesList = () => {
   const [movies, setMovies] = useState<Array<Movies>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("popular"); // Etat pour stocker la catégorie sélectionnée
 
-  // Fonction pour charger les films en fonction de la catégorie
   const loadMovies = async (category: string) => {
     setIsLoading(true);
     let data;
@@ -39,6 +39,13 @@ const MoviesList = () => {
   useEffect(() => {
     loadMovies(category);
   }, [category]); // Recharger les films chaque fois que la catégorie change
+
+  const handleReseach = async (e: any) => {
+    e.preventDefault();
+    const reserch = e.target.movieSearchInput.value;
+    const data = await searchMovie(reserch);
+    setMovies(data.results);
+  };
 
   return (
     <div className={styles.container}>
@@ -77,13 +84,11 @@ const MoviesList = () => {
           Upcoming
         </button>
       </div>
-      <form
-        className={styles.searchForm}
-        onSubmit={() => console.log("Rechercher un film")}
-      >
+      <form className={styles.searchForm} onSubmit={handleReseach}>
         <input
           className={styles.searchInput}
           type="text"
+          id="movieSearchInput"
           placeholder="Rechercher un film"
         />
         <button className={styles.button} type="submit">
@@ -91,7 +96,6 @@ const MoviesList = () => {
         </button>
       </form>
 
-      {/* Affichage des films */}
       {isLoading ? (
         <p>Chargement...</p>
       ) : (
