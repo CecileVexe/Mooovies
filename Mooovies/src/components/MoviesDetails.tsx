@@ -67,7 +67,9 @@ const MoviesDetails = () => {
               Release Date: {new Date(movie.release_date).toLocaleDateString()}
             </p>
             <p className={styles.details}>Popularity: {movie.popularity}</p>
-            <p className={styles.details}>Vote Average: {movie.vote_average}</p>
+            <p className={styles.details}>
+              Vote Average: {Math.round(movie.vote_average)}
+            </p>
             <p className={styles.details}>Vote Count: {movie.vote_count}</p>
             <p className={styles.details}>
               Genre: {movie.genres.map((genre) => genre.name).join(", ")}

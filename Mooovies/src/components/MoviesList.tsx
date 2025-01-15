@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getMoviesList } from "../services/moovies.service";
 import { Movies } from "../types/moovies.type";
 import { Link } from "react-router";
@@ -144,7 +144,7 @@ const MoviesList = () => {
                   alt={movie.title}
                 />
                 <p>{truncateString(movie.overview)}</p>
-                <p>Note : {movie.vote_average}⭐</p>
+                <p>Note : {Math.round(movie.vote_average)}⭐</p>
                 <Link to={`/movie/${movie.id}`}>En savoir plus</Link>
               </div>
             </Link>
