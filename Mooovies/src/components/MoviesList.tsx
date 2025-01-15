@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  getPopularMoovies,
-  getTopRatedMoovies,
-  getNowPlayingMoovies,
-  getUpcomingMoovies,
-} from "../services/moovies.service";
+import React, { useCallback, useEffect, useState } from "react";
+import { getMoviesList } from "../services/moovies.service";
 import { Movies } from "../types/moovies.type";
 import { Link } from "react-router";
 import styles from "./../style/MovieList.module.css"; // Import du fichier CSS Module
@@ -13,38 +8,45 @@ import { searchMovie } from "../services/movie.service";
 const MoviesList = () => {
   const [movies, setMovies] = useState<Array<Movies>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>("popular"); // Etat pour stocker la catégorie sélectionnée
+  const [category, setCategory] = useState<string>("popular");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = 500;
 
-  const loadMovies = async (category: string) => {
+  const loadMovies = useCallback(async (category: string, page: number) => {
     setIsLoading(true);
     let data;
     try {
-      if (category === "popular") {
-        data = await getPopularMoovies();
-      } else if (category === "top_rated") {
-        data = await getTopRatedMoovies();
-      } else if (category === "now_playing") {
-        data = await getNowPlayingMoovies();
-      } else if (category === "upcoming") {
-        data = await getUpcomingMoovies();
-      }
-      setMovies(data.results); // Mise à jour de la liste des films
+      data = await getMoviesList(category, String(page));
+      setMovies(data.results);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
     setIsLoading(false);
-  };
+  }, []);
 
   // Chargement des films au chargement initial (par défaut, les films populaires)
   useEffect(() => {
-    loadMovies(category);
-  }, [category]); // Recharger les films chaque fois que la catégorie change
+    loadMovies(category, currentPage);
+  }, [category, currentPage, loadMovies]); // Recharger les films chaque fois que la catégorie change
 
   const handleReseach = async (e: any) => {
     e.preventDefault();
     const reserch = e.target.movieSearchInput.value;
     const data = await searchMovie(reserch);
     setMovies(data.results);
+    setCurrentPage(1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
@@ -95,6 +97,26 @@ const MoviesList = () => {
           Rechercher
         </button>
       </form>
+
+      <div className={styles.pagination}>
+        <button
+          className={styles.paginationButton}
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          Précédent
+        </button>
+        <span className={styles.pageNumber}>
+          Page {currentPage} sur {totalPages}
+        </span>
+        <button
+          className={styles.paginationButton}
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Suivant
+        </button>
+      </div>
 
       {isLoading ? (
         <p>Chargement...</p>
