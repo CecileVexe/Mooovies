@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 import {
   getMoovieActors,
   getMoovieDetails,
@@ -56,25 +56,31 @@ const MoviesDetails = () => {
             Ajouter à la WishList
           </button>
         </div>
-        <img
-          className={styles.poster}
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-        />
-        <p className={styles.details}>{movie.overview}</p>
-        <p className={styles.details}>
-          Release Date: {new Date(movie.release_date).toLocaleDateString()}
-        </p>
-        <p className={styles.details}>Popularity: {movie.popularity}</p>
-        <p className={styles.details}>Vote Average: {movie.vote_average}</p>
-        <p className={styles.details}>Vote Count: {movie.vote_count}</p>
-        <p className={styles.details}>
-          Genre: {movie.genres.map((genre) => genre.name).join(", ")}
-        </p>
-        <p className={styles.details}>
-          Production Companies:{" "}
-          {movie.production_companies.map((company) => company.name).join(", ")}
-        </p>
+        <div className={styles.infos}>
+          <img
+            className={styles.poster}
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+          />
+          <div className={styles.detailsContainer}>
+            <p className={styles.details}>{movie.overview}</p>
+            <p className={styles.details}>
+              Release Date: {new Date(movie.release_date).toLocaleDateString()}
+            </p>
+            <p className={styles.details}>Popularity: {movie.popularity}</p>
+            <p className={styles.details}>Vote Average: {movie.vote_average}</p>
+            <p className={styles.details}>Vote Count: {movie.vote_count}</p>
+            <p className={styles.details}>
+              Genre: {movie.genres.map((genre) => genre.name).join(", ")}
+            </p>
+            <p className={styles.details}>
+              Production Companies:{" "}
+              {movie.production_companies
+                .map((company) => company.name)
+                .join(", ")}
+            </p>
+          </div>
+        </div>
 
         {movieActors?.cast && (
           <div className={styles.actorSection}>
@@ -102,14 +108,16 @@ const MoviesDetails = () => {
             <h3>Similar Movies</h3>
             <div className={styles.movieList}>
               {similarMovie.map((movie) => (
-                <div key={movie.id} className={styles.movieCard}>
-                  <img
-                    className={styles.movieImage}
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                  <p className={styles.movieTitle}>{movie.title}</p>
-                </div>
+                <Link to={`/movie/${movie.id}`}>
+                  <div key={movie.id} className={styles.movieCard}>
+                    <img
+                      className={styles.movieImage}
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                    <p className={styles.movieTitle}>{movie.title}</p>
+                  </div>
+                </Link>
               ))}
             </div>
           </>

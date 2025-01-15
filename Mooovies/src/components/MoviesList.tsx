@@ -56,6 +56,13 @@ const MoviesList = () => {
     }
   };
 
+  const truncateString = (description: string) => {
+    if (description.length > 100) {
+      return description.slice(0, 100) + "...";
+    }
+    return description;
+  };
+
   return (
     <div className={styles.container}>
       <h1>Movies</h1>
@@ -126,18 +133,23 @@ const MoviesList = () => {
       {isLoading ? (
         <p>Chargement...</p>
       ) : (
-        movies.map((movie) => (
-          <div key={movie.id} className={styles.movieCard}>
-            <h2 className={styles.movieTitle}>{movie.title}</h2>
-            <img
-              className={styles.movieImage}
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <p>{movie.overview}</p>
-            <Link to={`/movie/${movie.id}`}>En savoir plus</Link>
-          </div>
-        ))
+        <div className={styles.movieList}>
+          {movies.map((movie) => (
+            <Link to={`/movie/${movie.id}`}>
+              <div key={movie.id} className={styles.movieCard}>
+                <h2 className={styles.movieTitle}>{movie.title}</h2>
+                <img
+                  className={styles.movieImage}
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <p>{truncateString(movie.overview)}</p>
+                <p>Note : {movie.vote_average}⭐</p>
+                <Link to={`/movie/${movie.id}`}>En savoir plus</Link>
+              </div>
+            </Link>
+          ))}
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import { useWishlist } from "../context/WishListContext";
 import { Link } from "react-router";
 import styles from "./../style/Navbar.module.css"; // Import du fichier CSS Module
