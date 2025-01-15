@@ -1,21 +1,27 @@
 /* MoviesDetails.module.css */
 
+/* Conteneur principal */
 .container {
   padding: 20px;
   font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
 }
 
+/* Header */
 .header {
   text-align: center;
   margin-bottom: 20px;
 }
 
+/* Titre du film */
 .title {
   font-size: 2.5rem;
   font-weight: bold;
   color: #333;
+  margin-bottom: 10px;
 }
 
+/* Bouton Ajouter à la wishlist */
 .button {
   background-color: #007bff;
   color: white;
@@ -24,13 +30,13 @@
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;
-  margin-top: 20px;
 }
 
 .button:hover {
   background-color: #0056b3;
 }
 
+/* Image du film */
 .poster {
   width: 100%;
   max-width: 400px;
@@ -39,12 +45,14 @@
   display: block;
 }
 
+/* Détails du film */
 .details {
-  margin-top: 20px;
-  font-size: 1.2rem;
+  margin-top: 10px;
+  font-size: 1.1rem;
   color: #555;
 }
 
+/* Section des acteurs */
 .actorSection {
   margin-top: 40px;
 }
@@ -78,8 +86,37 @@
   color: #777;
 }
 
+/* Section des films similaires */
+.movieList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin-top: 40px;
+}
+
+.movieCard {
+  text-align: center;
+  width: 150px;
+}
+
+.movieImage {
+  width: 100%;
+  max-width: 120px;
+  height: 180px;
+  border-radius: 8px;
+}
+
+.movieTitle {
+  font-weight: bold;
+  margin-top: 10px;
+  color: #333;
+  font-size: 1rem;
+}
+
 @media (max-width: 768px) {
-  .actorList {
+  .actorList,
+  .movieList {
     flex-direction: column;
     align-items: center;
   }

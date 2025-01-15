@@ -1,13 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getMoovieActors, getMoovieDetails } from "../services/movie.service";
+import {
+  getMoovieActors,
+  getMoovieDetails,
+  getSimilarMovie,
+} from "../services/movie.service";
 import { Movie } from "../types/movie.type";
 import { MovieActorDetails } from "../types/actor.type";
 import { useWishlist } from "../context/WishListContext";
-import styles from "./../style/MovieDetails.module.css";
+import styles from "./../style/MovieDetails.module.css"; // Import du fichier CSS Module
+import { Movies } from "../types/moovies.type";
 
 const MoviesDetails = () => {
   const [movie, setMovie] = useState<Movie | undefined>();
+  const [similarMovie, setSimilarMovie] = useState<Movies[]>();
   const [movieActors, setMovieActors] = useState<
     MovieActorDetails | undefined
   >();
@@ -20,8 +26,10 @@ const MoviesDetails = () => {
     if (params.movieId) {
       const movieData = await getMoovieDetails(params.movieId);
       const actorData = await getMoovieActors(params.movieId);
+      const similarMovieData = await getSimilarMovie(params.movieId);
       setMovie(movieData);
       setMovieActors(actorData);
+      setSimilarMovie(similarMovieData.results);
       setIsLoading(false);
     }
   }, [params.movieId]);
@@ -87,6 +95,24 @@ const MoviesDetails = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {similarMovie && (
+          <>
+            <h3>Similar Movies</h3>
+            <div className={styles.movieList}>
+              {similarMovie.map((movie) => (
+                <div key={movie.id} className={styles.movieCard}>
+                  <img
+                    className={styles.movieImage}
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <p className={styles.movieTitle}>{movie.title}</p>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     )

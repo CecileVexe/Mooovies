@@ -27,7 +27,18 @@ export const getMoovieActors = async (movieId: string) => {
 export const searchMovie = async (search: string) => {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key?api_key=${apiKey}&query=${search}`
+      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${search}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getSimilarMovie = async (movieId: string) => {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`
     );
     return response.data;
   } catch (error) {
