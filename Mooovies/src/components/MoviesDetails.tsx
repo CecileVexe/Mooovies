@@ -8,7 +8,7 @@ import {
 import { Movie } from "../types/movie.type";
 import { MovieActorDetails } from "../types/actor.type";
 import { useWishlist } from "../context/WishListContext";
-import styles from "./../style/MovieDetails.module.css"; // Import du fichier CSS Module
+import styles from "./../style/MovieDetails.module.css";
 import { Movies } from "../types/moovies.type";
 
 const MoviesDetails = () => {
