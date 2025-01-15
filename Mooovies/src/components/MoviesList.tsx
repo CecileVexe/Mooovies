@@ -20,8 +20,6 @@ const MoviesList = () => {
     getDatas();
   }, []);
 
-  console.log(popularMovies);
-
   return (
     !isLoading && (
       <div>
@@ -44,7 +42,7 @@ const MoviesList = () => {
               height="450"
             />
             <p>{movie.overview}</p>
-            <Link to={`/movie:${movie.id}`}>En savoir plus</Link>
+            <Link to={`/movie/${movie.id}`}>En savoir plus</Link>
           </div>
         ))}
       </div>
