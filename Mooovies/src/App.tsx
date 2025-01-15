@@ -3,15 +3,22 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import MoviesList from "./components/MoviesList";
 import MoviesDetails from "./components/MoviesDetails";
+import { WishlistProvider } from "./context/WishListContext";
+import Wishlist from "./components/WishList";
+import Navbar from "./components/NavBar";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MoviesList />} />
-        <Route path="/movie/:movieId" element={<MoviesDetails />} />
-      </Routes>
-    </BrowserRouter>
+    <WishlistProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<MoviesList />} />
+          <Route path="/movie/:movieId" element={<MoviesDetails />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+        </Routes>
+      </BrowserRouter>
+    </WishlistProvider>
   );
 }
 

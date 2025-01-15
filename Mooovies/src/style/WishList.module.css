@@ -1,0 +1,27 @@
+/* Wishlist.module.css */
+
+.container {
+  padding: 20px;
+}
+
+.movieItem {
+  margin-bottom: 10px;
+}
+
+.button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #c82333;
+}
+
+.emptyMessage {
+  font-size: 1.2rem;
+  color: #888;
+}
