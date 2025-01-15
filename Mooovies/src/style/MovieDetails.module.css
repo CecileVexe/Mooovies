@@ -1,12 +1,17 @@
-
+/* MoviesDetails.module.css */
 
 .container {
-  margin: 20px;
-  font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #333;
 }
@@ -18,22 +23,64 @@
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
+  margin-top: 20px;
 }
 
 .button:hover {
   background-color: #0056b3;
 }
 
-.img {
+.poster {
   width: 100%;
-  max-width: 300px;
-  height: auto;
+  max-width: 400px;
+  margin: 20px auto;
   border-radius: 10px;
+  display: block;
 }
 
-.overview {
-  margin-top: 10px;
-  font-size: 1.1rem;
+.details {
+  margin-top: 20px;
+  font-size: 1.2rem;
   color: #555;
+}
+
+.actorSection {
+  margin-top: 40px;
+}
+
+.actorList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+}
+
+.actorCard {
+  text-align: center;
+  width: 150px;
+}
+
+.actorImage {
+  width: 100%;
+  max-width: 120px;
+  height: 180px;
+  border-radius: 8px;
+}
+
+.actorName {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.actorCharacter {
+  font-style: italic;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .actorList {
+    flex-direction: column;
+    align-items: center;
+  }
 }
