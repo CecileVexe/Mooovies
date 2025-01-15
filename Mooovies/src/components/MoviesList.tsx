@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { getMoviesList } from "../services/moovies.service";
 import { Movies } from "../types/moovies.type";
 import { Link } from "react-router";
-import styles from "./../style/MovieList.module.css"; // Import du fichier CSS Module
+import styles from "./../style/MovieList.module.css";
 import { searchMovie } from "../services/movie.service";
 
 const MoviesList = () => {
@@ -10,6 +10,7 @@ const MoviesList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("popular");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const totalPages = 500;
 
   const loadMovies = useCallback(async (category: string, page: number) => {
@@ -24,18 +25,24 @@ const MoviesList = () => {
     setIsLoading(false);
   }, []);
 
-  // Chargement des films au chargement initial (par défaut, les films populaires)
   useEffect(() => {
     loadMovies(category, currentPage);
-  }, [category, currentPage, loadMovies]); // Recharger les films chaque fois que la catégorie change
+  }, [category, currentPage, loadMovies]);
 
-  const handleReseach = async (e: any) => {
-    e.preventDefault();
-    const reserch = e.target.movieSearchInput.value;
-    const data = await searchMovie(reserch);
-    setMovies(data.results);
-    setCurrentPage(1);
-  };
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (searchQuery.trim()) {
+        setIsLoading(true);
+        const data = await searchMovie(searchQuery);
+        setMovies(data.results);
+        setCurrentPage(1);
+        setIsLoading(false);
+      } else {
+        loadMovies(category, currentPage);
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, category, currentPage, loadMovies]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -86,17 +93,15 @@ const MoviesList = () => {
           Upcoming
         </button>
       </div>
-      <form className={styles.searchForm} onSubmit={handleReseach}>
+      <div className={styles.searchForm}>
         <input
           className={styles.searchInput}
           type="text"
-          id="movieSearchInput"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Rechercher un film"
         />
-        <button className={styles.button} type="submit">
-          Rechercher
-        </button>
-      </form>
+      </div>
 
       <div className={styles.pagination}>
         <button
