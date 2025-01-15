@@ -26,7 +26,19 @@ export const WishlistProvider = ({ children }: WishlistProviderProps) => {
   const [wishlist, setWishlist] = useState<Movies[]>([]);
 
   const addToWishlist = (movie: Movie) => {
-    setWishlist((prevWishlist) => [...prevWishlist, movie]);
+    setWishlist((prevWishlist) => {
+      const isAlreadyInWishlist = prevWishlist.some(
+        (wishlistMovie) => wishlistMovie.id === movie.id
+      );
+
+      if (isAlreadyInWishlist) {
+        alert("Ce film a déjà été ajouté à la wishlist");
+        return prevWishlist;
+      } else {
+        alert(`${movie.title} ajouté à votre wishlist !`);
+        return [...prevWishlist, movie];
+      }
+    });
   };
 
   const removeFromWishlist = (id: number) => {

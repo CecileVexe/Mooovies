@@ -41,7 +41,6 @@ const MoviesDetails = () => {
   const handleAddToWishlist = () => {
     if (movie) {
       addToWishlist(movie);
-      alert(`${movie.title} ajouté à votre wishlist !`);
     }
   };
 
