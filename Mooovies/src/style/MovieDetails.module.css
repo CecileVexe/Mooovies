@@ -22,6 +22,7 @@
 }
 
 /* Bouton Ajouter à la wishlist */
+/* Ajout de style pour les boutons actifs */
 .button {
   background-color: #007bff;
   color: white;
@@ -34,6 +35,10 @@
 
 .button:hover {
   background-color: #0056b3;
+}
+
+.button.active {
+  background-color: #004085;
 }
 
 /* Image du film */

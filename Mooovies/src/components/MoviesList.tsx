@@ -1,48 +1,101 @@
 import React, { useEffect, useState } from "react";
-import { getPopularMoovies } from "../services/moovies.service";
+import {
+  getPopularMoovies,
+  getTopRatedMoovies,
+  getNowPlayingMoovies,
+  getUpcomingMoovies,
+} from "../services/moovies.service";
 import { Movies } from "../types/moovies.type";
 import { Link } from "react-router";
 import styles from "./../style/MovieList.module.css"; // Import du fichier CSS Module
 
 const MoviesList = () => {
-  const [popularMovies, setPopularMovies] = useState<Array<Movies>>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [movies, setMovies] = useState<Array<Movies>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>("popular"); // Etat pour stocker la catégorie sélectionnée
 
-  const getDatas = async () => {
+  // Fonction pour charger les films en fonction de la catégorie
+  const loadMovies = async (category: string) => {
     setIsLoading(true);
-    const ListData = await getPopularMoovies();
-    setPopularMovies(ListData.results);
+    let data;
+    try {
+      if (category === "popular") {
+        data = await getPopularMoovies();
+      } else if (category === "top_rated") {
+        data = await getTopRatedMoovies();
+      } else if (category === "now_playing") {
+        data = await getNowPlayingMoovies();
+      } else if (category === "upcoming") {
+        data = await getUpcomingMoovies();
+      }
+      setMovies(data.results); // Mise à jour de la liste des films
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
     setIsLoading(false);
   };
 
+  // Chargement des films au chargement initial (par défaut, les films populaires)
   useEffect(() => {
-    getDatas();
-  }, []);
+    loadMovies(category);
+  }, [category]); // Recharger les films chaque fois que la catégorie change
 
   return (
-    !isLoading && (
-      <div className={styles.container}>
-        <h1>Popular Movies</h1>
-        <div>
-          <button className={styles.button}>Now Playing</button>
-          <button className={styles.button}>Popular</button>
-          <button className={styles.button}>Top Rated</button>
-          <button className={styles.button}>Upcoming</button>
-        </div>
-        <form
-          className={styles.searchForm}
-          onSubmit={() => console.log("coucou")}
+    <div className={styles.container}>
+      <h1>Movies</h1>
+      <div>
+        <button
+          className={`${styles.button} ${
+            category === "popular" ? styles.active : ""
+          }`}
+          onClick={() => setCategory("popular")}
         >
-          <input
-            className={styles.searchInput}
-            type="text"
-            placeholder="Rechercher un film"
-          />
-          <button className={styles.button} type="submit">
-            Rechercher
-          </button>
-        </form>
-        {popularMovies.map((movie) => (
+          Popular
+        </button>
+        <button
+          className={`${styles.button} ${
+            category === "now_playing" ? styles.active : ""
+          }`}
+          onClick={() => setCategory("now_playing")}
+        >
+          Now Playing
+        </button>
+        <button
+          className={`${styles.button} ${
+            category === "top_rated" ? styles.active : ""
+          }`}
+          onClick={() => setCategory("top_rated")}
+        >
+          Top Rated
+        </button>
+        <button
+          className={`${styles.button} ${
+            category === "upcoming" ? styles.active : ""
+          }`}
+          onClick={() => setCategory("upcoming")}
+        >
+          Upcoming
+        </button>
+      </div>
+      <form
+        className={styles.searchForm}
+        onSubmit={() => console.log("Rechercher un film")}
+      >
+        <input
+          className={styles.searchInput}
+          type="text"
+          placeholder="Rechercher un film"
+        />
+        <button className={styles.button} type="submit">
+          Rechercher
+        </button>
+      </form>
+
+      {/* Affichage des films */}
+      {isLoading ? (
+        <p>Chargement...</p>
+      ) : (
+        movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
             <h2 className={styles.movieTitle}>{movie.title}</h2>
             <img
@@ -53,9 +106,9 @@ const MoviesList = () => {
             <p>{movie.overview}</p>
             <Link to={`/movie/${movie.id}`}>En savoir plus</Link>
           </div>
-        ))}
-      </div>
-    )
+        ))
+      )}
+    </div>
   );
 };
 

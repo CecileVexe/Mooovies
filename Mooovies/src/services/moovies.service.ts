@@ -38,7 +38,7 @@ export const getTopRatedMoovies = async () => {
 export const getUpcomingMoovies = async () => {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/up_coming?api_key=${apiKey}`
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`
     );
     return response.data;
   } catch (error) {
