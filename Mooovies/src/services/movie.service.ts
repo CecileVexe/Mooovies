@@ -1,12 +1,11 @@
 import axios from "axios";
 
-const apiKey = "daecc2030d9d538a823a8e0e08110341";
+const apiKey = import.meta.env.VITE_API_KEY;
+const apiURL = "https://api.themoviedb.org/3/movie/";
 
 export const getMoovieDetails = async (movieId: string) => {
   try {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`
-    );
+    const response = await axios.get(`${apiURL}${movieId}?api_key=${apiKey}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -16,7 +15,7 @@ export const getMoovieDetails = async (movieId: string) => {
 export const getMoovieActors = async (movieId: string) => {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`
+      `${apiURL}${movieId}/credits?api_key=${apiKey}`
     );
     return response.data;
   } catch (error) {
@@ -38,7 +37,7 @@ export const searchMovie = async (search: string) => {
 export const getSimilarMovie = async (movieId: string) => {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`
+      `${apiURL}${movieId}/similar?api_key=${apiKey}`
     );
     return response.data;
   } catch (error) {
